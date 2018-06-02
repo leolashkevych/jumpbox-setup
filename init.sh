@@ -6,7 +6,7 @@ if (( $EUID != 0 )); then
     sudo su
 fi
 
-apt-get update && apt-get upgrade
+apt-get update -y -q && apt-get upgrade -y -q
 apt-get install python -y -q
 
 #oh-my-zsh
