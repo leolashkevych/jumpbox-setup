@@ -13,7 +13,9 @@ apt-get install python -y -q
 
 
 #oh-my-zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+apt install zsh -y -q
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" & >/dev/null
+sleep 10
 sed -i 's/robbyrussell/fishy/g' ~/.zshrc
 
 # Powershell
@@ -27,18 +29,20 @@ apt-get update -y -q && apt-get install powershell -y -q
 
 # go
 apt-get install golang -y -q --force-yes
-git clone https://github.com/OJ/gobuster.git /opt/gobuster 
+git clone https://github.com/OJ/gobuster.git /opt/gobuster
 echo "export GOPATH=$HOME/go" >> ~/.zshrc
 echo "export PATH=$PATH:$GOROOT/bin:$GOPATH/bin" >> ~/.zshrc
-cd /opt/gobuster 
+cd /opt/gobuster
 go get && go build
 go install
 
 
-# TrustedSec 
-## PTH
+# TrustedSec
+## PTF
 git clone https://github.com/trustedsec/ptf /opt/ptf
 sed -i 's/pentest/jumpbox/g' config/ptf.config
+sed -i '$ d' config/ptf.config
+echo 'IGNORE_UPDATE_ALL_MODULES="modules/password-recovery/hashcat,modules/pivoting/iodine,modules/exploitation/kingphisher,modules/av-bypass/veil-framework,modules/av-bypass/shellter,modules/exploitation/fuzzbunch,modules/wireless/ghost-phisher,modules/exploitation/davtest,modules/exploitation/fuzzbunch.py,modules/exploitation/davtest"' >> config/ptf.config
 cd /opt/ptf && ./ptf --update-all -y
 
 ## SET
@@ -55,7 +59,7 @@ git clone https://github.com/samratashok/nishang.git /opt/nishang
 git clone https://github.com/EmpireProject/Empire.git /opt/Empire
 cd /opt/Empire && ./setup/install.sh
 
-# C2 
+# C2
 git clone https://github.com/nettitude/PoshC2.git /opt/PoshC2
 
 # Merlin - HTTP C2
@@ -88,4 +92,3 @@ tar xvf payload_templates.txz && mv payload_templates/* pupy/payload_templates/ 
 
 git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
 git clone https://github.com/berzerk0/Probable-Wordlists.git /usr/share/wordlists/Probable
-
